@@ -1,0 +1,70 @@
+// Plugin 
+@import url(./plugins/owl.carousel.min.scss);
+// @import url(./header.scss); 
+
+
+// Default 
+body {
+    
+}
+
+h1,h2,h3,h4,h5,h6 {
+    // @apply text-title dark:text-white font-bold;
+}
+h1 {
+    @apply text-3xl lg:text-4xl xl:text-5xl;
+}
+h2 {
+    @apply text-2xl lg:text-3xl xl:text-4xl;
+}
+h3 {
+    @apply text-xl lg:text-2xl xl:text-3xl;
+}
+h4 {
+    @apply text-lg lg:text-xl xl:text-2xl;
+}
+h5 {
+    @apply text-lg xl:text-xl;
+}
+h6 {
+    @apply text-lg;
+}
+input[type='number']::-webkit-outer-spin-button,
+input[type='number']::-webkit-inner-spin-button,
+input[type='number'] {
+    -webkit-appearance: none;
+    margin: 0;
+    -moz-appearance: textfield !important;
+}
+
+// Common Section Padding ===================
+// .s-py-100 {
+//     @apply py-[50px] md:py-[70px] xl:py-[100px];
+// }
+// .s-pb-100 {
+//     @apply pb-[50px] md:pb-[70px] xl:pb-[100px];
+// }
+// .s-pt-100 {
+//     @apply pt-[50px] md:pt-[70px] xl:pt-[100px];
+// }
+// .s-py-100-50 {
+//     @apply pt-[50px] md:pt-[70px] xl:pt-[100px] 
+//     pb-[25px] md:pb-[35px] xl:pb-[50px];
+// }
+// .s-py-50 {
+//     @apply  py-[25px] md:py-[35px] xl:py-[50px];   
+// }
+// .s-py-50-100 {
+//     @apply pb-[50px] md:pb-[70px] xl:pb-[100px] 
+//     pt-[25px] md:pt-[35px] xl:pt-[50px];
+// }
+// .s-pb-50 {
+//     @apply  pb-[25px] md:pb-[35px] xl:pb-[50px];   
+// }
+
+// Container ================================
+// .container,
+// .container-fluid {
+//     @apply px-4 mx-auto;
+// }
+

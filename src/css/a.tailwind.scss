@@ -1,0 +1,68 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+// @import url('https://fonts.googleapis.com/css2?family=Josefin+Sans:ital,wght@0,200;0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600;1,700&display=swap');
+
+// // Custom Fonts 
+// @font-face {
+//     font-family: 'July it';
+//     src: url('../img/fonts/Julyit.woff2') format('woff2'),
+//         url('../img/fonts/Julyit.woff') format('woff'),
+//         url('../img/fonts/Julyit.ttf') format('truetype');
+//     font-weight: normal;
+//     font-style: normal;
+//     font-display: swap;
+// }
+
+
+
+// /* apply custom class */
+// .btn{
+//     @apply py-2 px-4 font-semibold;
+// }
+
+// .btn-green{
+//     @apply rounded-lg shadow-md text-white bg-green-500;
+// }
+
+// /* base directives apply css */
+
+// @layer base{
+//     a{
+//         @apply text-blue-400 underline hover:text-blue-700;
+//     }
+// }
+// /* components directives apply css */
+
+// @layer components{
+//     .btn-blue {
+//         @apply rounded-lg shadow-md text-white bg-blue-400;
+//     }
+// }
+// /* utilities directives apply css */
+// @layer utilities{
+//     .p-21{
+//         padding: 5.5rem;
+//     }
+//     @variants hover,focus{
+//         .p-21 {
+//             padding: 5.5rem;
+//         }
+//     }
+// }
+
+// /* responsive variants options all device*/
+// @responsive{
+//     .rotate-0 {
+//         transform:rotate(0deg);
+//     }
+// }
+
+
+// /* screen function */
+// @screen sm {
+//     .rotate-0 {
+//         transform:rotate(0deg);
+//     }
+// }
