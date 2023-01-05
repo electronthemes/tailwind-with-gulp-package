@@ -1,8 +1,8 @@
 /**
 *   Gulp with TailwindCSS - An CSS Utility framework                                
-*   Author : Manjunath G                                              
-*   URL : manjumjn.com | lazymozek.com
-*   Twitter : twitter.com/manju_mjn                                    
+*   Author : Electronthemes                                       
+*   URL : http://electronthemes.com/
+*   Twitter : twitter.com/electronthemes1                                   
 **/
 
 /*
@@ -24,6 +24,7 @@ const uglify = require('gulp-terser');//To Minify JS files
 const imagemin = require('gulp-imagemin'); //To Optimize Images
 const cleanCSS = require('gulp-clean-css');//To Minify CSS files
 const purgecss = require('gulp-purgecss');// Remove Unused CSS from Styles
+const twig = require('gulp-twig'); // Compiling Twig file to HTML
 const autoprefixer = require('gulp-autoprefixer');
 //Note : Webp still not supported in major browsers including forefox
 //const webp = require('gulp-webp'); //For converting images to WebP format
@@ -48,9 +49,11 @@ function previewReload(done){
   done();
 }
 
-//Development Tasks
+/*==================================
+Development Tasks
+==================================*/
 function devHTML(){
-  return src(`${options.paths.src.base}/**/*.html`).pipe(dest(options.paths.dist.base));
+  return src(`${options.paths.src.base}/**/*.twig`).pipe(twig()).pipe(dest(options.paths.dist.base));
 } 
 
 function devStyles(){
@@ -63,7 +66,6 @@ function devStyles(){
     ]))
     .pipe(concat({ path: 'style.css'}))
     .pipe(autoprefixer({
-      browsers: ['last 99 versions'],
       cascade: false
     }))
     .pipe(dest(options.paths.dist.css));
@@ -83,7 +85,7 @@ function devImages(){
 }
 
 // function devfonts(){
-//   return src(`${options.paths.src.}/**/*`).pipe(dest(options.paths.dist.fonts));
+//   return src(`${options.paths.src.fonts}/**/*`).pipe(dest(options.paths.dist.fonts));
 // }
 
 function watchFiles(){
@@ -100,7 +102,9 @@ function devClean(){
   return del([options.paths.dist.base]);
 }
 
-//Production Tasks (Optimized Build for Live/Production Sites)
+/*=================================================
+Production Tasks (Optimized Build for Live/Production Sites)
+==================================================*/
 function prodHTML(){
   return src(`${options.paths.src.base}/**/*.html`).pipe(dest(options.paths.build.base));
 }
@@ -132,9 +136,10 @@ function prodScripts(){
 function prodImages(){
   return src(options.paths.src.img + '/**/*').pipe(imagemin()).pipe(dest(options.paths.build.img));
 }
-// function prodFonts(){
-//   return src(options.paths.src.fonts + '/**/*').pipe(fontsmin()).pipe(dest(options.paths.build.fonts));
-// }
+
+function prodFonts(){
+  return src(options.paths.src.fonts + '/**/*').pipe(dest(options.paths.build.fonts));
+}
 
 function prodClean(){
   console.log("\n\t" + logSymbols.info,"Cleaning build folder for fresh start.\n");
@@ -155,6 +160,6 @@ exports.default = series(
 
 exports.prod = series(
   prodClean, // Clean Build Folder
-  parallel(prodStyles, prodScripts, prodImages, prodHTML), //Run All tasks in parallel
+  parallel(prodStyles, prodScripts, prodImages, prodFonts, prodHTML), //Run All tasks in parallel
   buildFinish
 );
