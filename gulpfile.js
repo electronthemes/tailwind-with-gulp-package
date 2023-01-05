@@ -65,7 +65,7 @@ function imageTask() {
 
 // js asssets
 function jsPluginsTask() {
-    return src(['./src/assets/js/**/*.js', '!src/assets/js/scripts.js'])
+    return src('./src/assets/js/libs/*.js')
         .pipe(concat('app.min.js'))
         .pipe(uglify())
         .pipe(dest('dist/assets/js'))
@@ -73,7 +73,7 @@ function jsPluginsTask() {
 
 // Custom JS task
 function customJsTask() {
-    return src('src/assets/js/main.js')
+    return src('src/assets/js/*.js')
         .pipe(dest('dist/assets/js'))
 }
 
