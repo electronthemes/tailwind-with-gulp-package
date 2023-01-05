@@ -13,6 +13,8 @@
     |   |   |-- style.css
     |   |-- img
     |   |   |-- cover.jpg
+        |-- fonts
+        |   |-- demo.woff2
     |   |-- js
     |       |-- scripts.js
     |-- dist
@@ -30,6 +32,8 @@
         |   |-- main.scss
         |-- img
         |   |-- cover.jpg
+        |-- fonts
+        |   |-- demo.woff2
         |-- js
             |-- main.js
             |-- external

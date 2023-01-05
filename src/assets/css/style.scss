@@ -1,8 +1,12 @@
 // Plugin 
 @import url(./plugins/owl.carousel.min.scss);
-// @import url(./header.scss); 
 
+// Tailwind components
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
 
+// Custom styles
 // Default 
 body {
     
@@ -67,4 +71,3 @@ input[type='number'] {
 // .container-fluid {
 //     @apply px-4 mx-auto;
 // }
-

@@ -1,165 +1,121 @@
-/**
-*   Gulp with TailwindCSS - An CSS Utility framework                                
-*   Author : Electronthemes                                       
-*   URL : http://electronthemes.com/
-*   Twitter : twitter.com/electronthemes1                                   
-**/
-
-/*
-  Usage:
-  1. npm install //To install all dev dependencies of package
-  2. npm run dev //To start development and server for live preview
-  3. npm run prod //To generate minifed files for live server
-*/
-
-const { src, dest, task, watch, series, parallel } = require('gulp');
-const del = require('del'); //For Cleaning build/dist for fresh export
-const options = require("./config"); //paths and other options from config.js
-const browserSync = require('browser-sync').create();
-
-const sass = require('gulp-sass')(require('sass')); //For Compiling SASS files
-const postcss = require('gulp-postcss'); //For Compiling tailwind utilities with tailwind config
-const concat = require('gulp-concat'); //For Concatinating js,css files
-const uglify = require('gulp-terser');//To Minify JS files
-const imagemin = require('gulp-imagemin'); //To Optimize Images
-const cleanCSS = require('gulp-clean-css');//To Minify CSS files
-const purgecss = require('gulp-purgecss');// Remove Unused CSS from Styles
-const twig = require('gulp-twig'); // Compiling Twig file to HTML
+const { series, dest, src, watch, parallel } = require('gulp')
+const twig = require('gulp-twig')
+const sass = require('gulp-sass')(require('sass'))
+const browsersync = require('browser-sync').create()
+const concat = require('gulp-concat')
+const uglify = require('gulp-uglify')
+const postcss = require('gulp-postcss');
 const autoprefixer = require('gulp-autoprefixer');
-//Note : Webp still not supported in major browsers including forefox
-//const webp = require('gulp-webp'); //For converting images to WebP format
-//const replace = require('gulp-replace'); //For Replacing img formats to webp in html
-const logSymbols = require('log-symbols'); //For Symbolic Console logs :) :P 
 
-//Load Previews on Browser on dev
-function livePreview(done){
-  browserSync.init({
-    server: {
-      baseDir: options.paths.dist.base
-    },
-    port: options.config.port || 5000
-  });
-  done();
-} 
 
-// Triggers Browser reload
-function previewReload(done){
-  console.log("\n\t" + logSymbols.info,"Reloading Browser Preview.\n");
-  browserSync.reload();
-  done();
+function styleTask(){
+    const tailwindcss = require('tailwindcss'); 
+    return src(`./src/assets/css/*.scss`).pipe(sass().on('error', sass.logError))
+      .pipe(dest('./src/assets/css'))
+      .pipe(postcss([
+        tailwindcss('./tailwind.config.js'),
+        require('autoprefixer'),
+      ]))
+      .pipe(concat({ path: 'style.css'}))
+      .pipe(autoprefixer({
+        cascade: false
+      }))
+      .pipe(dest('dist/assets/css'));
 }
 
-/*==================================
-Development Tasks
-==================================*/
-function devHTML(){
-  return src(`${options.paths.src.base}/**/*.twig`).pipe(twig()).pipe(dest(options.paths.dist.base));
-} 
-
-function devStyles(){
-  const tailwindcss = require('tailwindcss'); 
-  return src(`${options.paths.src.css}/**/*.scss`).pipe(sass().on('error', sass.logError))
-    .pipe(dest(options.paths.src.css))
-    .pipe(postcss([
-      tailwindcss(options.config.tailwindjs),
-      require('autoprefixer'),
-    ]))
-    .pipe(concat({ path: 'style.css'}))
-    .pipe(autoprefixer({
-      cascade: false
-    }))
-    .pipe(dest(options.paths.dist.css));
+// Concat all the plugins css
+function mergeAllPuginStyles(){
+    return src('./src/assets/css/pugins/**').pipe(concat('plugins.min.js')).pipe(dest('dist/assets/css'))
 }
 
-function devScripts(){
-  return src([
-    `${options.paths.src.js}/default/**/*.js`,
-    `${options.paths.src.js}/libs/**/*.js`,
-    `${options.paths.src.js}/*.js`,
-    `!${options.paths.src.js}/**/external/*`
-  ]).pipe(concat({ path: 'scripts.js'})).pipe(dest(options.paths.dist.js));
+
+// Template engine twig
+function templateTask() {
+    return src('./src/*.twig')
+        .pipe(twig()).pipe(dest('dist'))
 }
 
-function devImages(){
-  return src(`${options.paths.src.img}/**/*`).pipe(dest(options.paths.dist.img));
-}
-
-// function devfonts(){
-//   return src(`${options.paths.src.fonts}/**/*`).pipe(dest(options.paths.dist.fonts));
+// SCSS Styles
+// function styleTask() {
+//     return src('./src/assets/scss/*.scss')
+//         .pipe(sourcemap.init())
+//         .pipe(sass({ outputStyle: 'compressed' }))
+//         .pipe(sourcemap.write('.'))
+//         .pipe(dest('dist/assets/css')).pipe(browsersync.stream())
 // }
 
-function watchFiles(){
-  watch(`${options.paths.src.base}/**/*.html`,series(devHTML, devStyles, previewReload));
-  watch([options.config.tailwindjs, `${options.paths.src.css}/**/*.scss`],series(devStyles, previewReload));
-  watch(`${options.paths.src.js}/**/*.js`,series(devScripts, previewReload));
-  watch(`${options.paths.src.img}/**/*`,series(devImages, previewReload));
-  // watch(`${options.paths.src.fonts}/**/*`,series(devfonts, previewReload));
-  console.log("\n\t" + logSymbols.info,"Watching for Changes..\n");
+// CSS Styles
+// function cssPluginTask() {
+//     return src('./src/assets/css/*.css')
+//         .pipe(concat('plugins.min.css'))
+//         .pipe(dest('dist/assets/css'))
+// }
+
+// CSS Styles
+function videoTask() {
+    return src('./src/assets/video/**')
+        .pipe(dest('dist/assets/video'))
 }
 
-function devClean(){
-  console.log("\n\t" + logSymbols.info,"Cleaning dist folder for fresh start.\n");
-  return del([options.paths.dist.base]);
+// Image asssets
+function imageTask() {
+    return src('./src/assets/img/**')
+        .pipe(dest('dist/assets/img'))
 }
 
-/*=================================================
-Production Tasks (Optimized Build for Live/Production Sites)
-==================================================*/
-function prodHTML(){
-  return src(`${options.paths.src.base}/**/*.html`).pipe(dest(options.paths.build.base));
+// js asssets
+function jsPluginsTask() {
+    return src(['./src/assets/js/**/*.js', '!src/assets/js/scripts.js'])
+        .pipe(concat('app.min.js'))
+        .pipe(uglify())
+        .pipe(dest('dist/assets/js'))
 }
 
-function prodStyles(){
-  return src(`${options.paths.dist.css}/**/*`)
-  .pipe(purgecss({
-    content: ['src/**/*.{html,js}'],
-    defaultExtractor: content => {
-      const broadMatches = content.match(/[^<>"'`\s]*[^<>"'`\s:]/g) || []
-      const innerMatches = content.match(/[^<>"'`\s.()]*[^<>"'`\s.():]/g) || []
-      return broadMatches.concat(innerMatches)
-    }
-  }))
-  .pipe(cleanCSS({compatibility: 'ie8'}))
-  .pipe(dest(options.paths.build.css));
+// Custom JS task
+function customJsTask() {
+    return src('src/assets/js/main.js')
+        .pipe(dest('dist/assets/js'))
 }
 
-function prodScripts(){
-  return src([
-    `${options.paths.src.js}/libs/**/*.js`,
-    `${options.paths.src.js}/**/*.js`
-  ])
-  .pipe(concat({ path: 'scripts.js'}))
-  .pipe(uglify())
-  .pipe(dest(options.paths.build.js));
+// Fonts file
+function custonFonts() {
+    return src('src/assets/fonts/**')
+        .pipe(dest('dist/assets/fonts'))
 }
 
-function prodImages(){
-  return src(options.paths.src.img + '/**/*').pipe(imagemin()).pipe(dest(options.paths.build.img));
+// Live reload browsersync
+function browsersyncServe(cb) {
+    browsersync.init({
+        server: {
+            baseDir: './dist'
+        }
+    })
+    cb()
 }
 
-function prodFonts(){
-  return src(options.paths.src.fonts + '/**/*').pipe(dest(options.paths.build.fonts));
+// Watch all files
+function watcher() {
+    watch('./src/**/*.twig').on("change", series(parallel([templateTask, styleTask]), browsersync.reload))
+    watch('./src/assets/img/**', imageTask)
+    watch('./src/assets/js/**/*.js', jsPluginsTask)
+    watch('./src/assets/js/scripts.js', customJsTask)
+    watch('./src/assets/css/*.scss', styleTask)
+    watch('./src/assets/css/pugins/**', mergeAllPuginStyles)
+    watch('./src/assets/fonts/**', custonFonts)
+    watch('./src/assets/video/**', videoTask)
 }
 
-function prodClean(){
-  console.log("\n\t" + logSymbols.info,"Cleaning build folder for fresh start.\n");
-  return del([options.paths.build.base]);
-}
 
-function buildFinish(done){
-  console.log("\n\t" + logSymbols.info,`Production build is complete. Files are located at ${options.paths.build.base}\n`);
-  done();
-}
 
 exports.default = series(
-  devClean, // Clean Dist Folder
-  parallel(devStyles, devScripts, devImages, devHTML), //Run All tasks in parallel
-  livePreview, // Live Preview Build
-  watchFiles // Watch for Live Changes
-);
-
-exports.prod = series(
-  prodClean, // Clean Build Folder
-  parallel(prodStyles, prodScripts, prodImages, prodFonts, prodHTML), //Run All tasks in parallel
-  buildFinish
-);
+    templateTask,
+    styleTask,
+    mergeAllPuginStyles,
+    videoTask,
+    imageTask,
+    jsPluginsTask,
+    customJsTask,
+    custonFonts,
+    browsersyncServe,
+    watcher
+)

@@ -1,14 +1,7 @@
 module.exports = {
-  mode: 'jit', // Just-In-Time Compiler
   purge: ['./src/**/*.html', './src/**/*.twig'],
   darkMode: 'class', // or 'media' or 'class'
   theme: {
-    // Font Family
-    // fontFamily: {
-    //   Josefin: ['Josefin Sans', 'sans-serif'],
-    //   julyIt: ['July it'],
-    // },
-
     extend: {
       // Color
       colors: {
