@@ -13,7 +13,7 @@ body {
 }
 
 h1,h2,h3,h4,h5,h6 {
-    @apply font-ibmplex font-semibold;
+    @apply font-semibold;
 }
 h1 {
     @apply text-3xl lg:text-4xl xl:text-5xl;
