@@ -1,19 +1,16 @@
-
-
 // Tailwind components
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
-
 // Custom styles
 // Default 
 body {
-    font-family: "IBM Plex Sans", sans-serif;
+    
 }
 
 h1,h2,h3,h4,h5,h6 {
-    @apply font-semibold;
+    // @apply text-title dark:text-white font-bold;
 }
 h1 {
     @apply text-3xl lg:text-4xl xl:text-5xl;
@@ -67,74 +64,7 @@ input[type='number'] {
 // }
 
 // Container ================================
-.container {
-    @apply px-5 mx-auto;
-}
-
-
-// Menu
-.hamburger {
-    position: relative;
-    width: 36px;
-    height: 32px;
-    font-size: inherit;
-    transition: all 0.3s ease;
-    cursor: pointer;
-  
-    &-line {
-      position: absolute;
-      right: 0;
-      width: 100%;
-      height: 3.5px;
-      border-radius: 0.125em;
-      background: currentColor;
-      transition: inherit;
-      font-size: 2rem;
-      color: #fff;
-  
-      &:nth-child(1) {
-        top: 0.125em;
-  
-        .hamburger.is-active &,
-        .w-nav-button.w--open & {
-          top: 50%;
-          transform: translateY(-50%) rotateZ(-135deg);
-        }
-      }
-  
-      &:nth-child(2) {
-        top: 0.438em;
-  
-        .hamburger.is-active &,
-        .w-nav-button.w--open & {
-          right: 50%;
-          width: 0;
-        }
-      }
-  
-      &:nth-child(3) {
-        top: 0.75em;
-        width: 0.625em;
-  
-        .hamburger.is-active &,
-        .w-nav-button.w--open & {
-          top: 50%;
-          width: 100%;
-          transform: translateY(-50%) rotateZ(135deg);
-        }
-      }
-    }
-}
-@media screen and (max-width: 640px) {
-    .main-menu {
-        overflow: hidden;
-        visibility: hidden;
-        transition: all .4s ease-in-out;
-        clip-path: polygon(0 0, 100% 0, 100% 0, 0 0);
-        &.menu-active {
-            opacity: 1;
-            visibility: visible;
-            clip-path: polygon(0 0, 100% 0, 100% 100%, 0% 100%);
-        }
-    }
-}
+// .container,
+// .container-fluid {
+//     @apply px-4 mx-auto;
+// }

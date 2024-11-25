@@ -25,16 +25,31 @@ function styleTask(){
 
 // Concat all the plugins css
 function mergeAllPuginStyles(){
-    return src('./src/assets/css/plugins/**')
-        .pipe(concat('plugins.min.css'))
-        .pipe(dest('dist/assets/css'))
+    return src('./src/assets/css/pugins/**').pipe(concat('plugins.min.js')).pipe(dest('dist/assets/css'))
 }
+
 
 // Template engine twig
 function templateTask() {
     return src('./src/*.twig')
         .pipe(twig()).pipe(dest('dist'))
 }
+
+// SCSS Styles
+// function styleTask() {
+//     return src('./src/assets/scss/*.scss')
+//         .pipe(sourcemap.init())
+//         .pipe(sass({ outputStyle: 'compressed' }))
+//         .pipe(sourcemap.write('.'))
+//         .pipe(dest('dist/assets/css')).pipe(browsersync.stream())
+// }
+
+// CSS Styles
+// function cssPluginTask() {
+//     return src('./src/assets/css/*.css')
+//         .pipe(concat('plugins.min.css'))
+//         .pipe(dest('dist/assets/css'))
+// }
 
 // CSS Styles
 function videoTask() {

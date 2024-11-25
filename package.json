@@ -1,5 +1,5 @@
 {
-  "name": "le-burger-week",
+  "name": "gulp-with-tailwindcss",
   "version": "1.2.0",
   "description": "TailwindCSS StarterKit with Gulp",
   "main": "gulpfile.js",
